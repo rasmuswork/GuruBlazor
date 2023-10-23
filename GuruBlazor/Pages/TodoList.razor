@@ -1,0 +1,219 @@
+﻿
+@using ConverterSite.Data;
+@page "/TodoList"
+
+
+
+
+
+
+<h3 style="color:white">Todo List</h3>
+
+<div> 
+    <div style="flex: 1; padding: 20px; box-sizing: border-box; background-color: #f0f0f0;">
+
+        <div>
+            <input type="text" @bind="newTask" />
+            <button class="btn btn-success mb-2" @onclick="AddTask">Add Task</button>
+        </div>
+
+        <ul>
+            @foreach (var todo in todos)
+            {
+
+                <li class="list-group-item">
+                    <button class="btn btn-danger mb-2" @onclick="()=>DeleteTask(todo)">Delete</button>
+                    @todo.Title
+                </li>
+            }
+        </ul>
+
+    </div>
+
+
+    <div style="flex: 1; padding: 20px; box-sizing: border-box; background-color:white;">
+        <h2>Schedule - @DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")</h2>
+        <table>
+
+            <tr>
+                <th>Time</th>
+                <th class="@GetDayClass(DayOfWeek.Monday)">Monday</th>
+                <th class="@GetDayClass(DayOfWeek.Tuesday)">Tuesday</th>
+                <th class="@GetDayClass(DayOfWeek.Wednesday)">Wednesday</th>
+                <th class="@GetDayClass(DayOfWeek.Thursday)">Thursday</th>
+                <th class="@GetDayClass(DayOfWeek.Friday)">Friday</th>
+                <th class="@GetDayClass(DayOfWeek.Saturday)">Saturday</th>
+                <th class="@GetDayClass(DayOfWeek.Sunday)">Sunday</th>
+            </tr>
+
+            <tr>
+                <td class="time-slot">7:00</td>
+                <td>Awaken</td>
+                <td>Awaken</td>
+                <td>Awaken</td>
+                <td>Awaken</td>
+                <td>Awaken</td>
+
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class="time-slot">8:00</td>
+                <td class="work">Work start</td>
+                <td class="work">Work start</td>
+                <td class="work">Work start</td>
+                <td class="work">Work start</td>
+                <td class="work">Work start</td>
+                <td></td>
+                <td></td>
+
+
+            </tr>
+
+            <tr>
+                <td class="time-slot">9:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="awaken">Awaken</td>
+                <td class="awaken">Awaken</td>
+            </tr>
+            <tr>
+                <td class="time-slot">10:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td>Vaske tøj</td>
+                <td>Handle</td>
+            </tr>
+            <tr>
+                <td class="time-slot">11:00</td>
+                <td class="work">Lunch</td>
+                <td class="work">Lunch</td>
+                <td class="work">Lunch</td>
+                <td class="work">Lunch</td>
+                <td class="work">Lunch</td>
+                <td>Rydde op</td>
+                <td></td>
+
+
+            </tr>
+
+
+            <tr>
+                <td class="time-slot">12:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">13:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">14:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">15:00</td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td class="work"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">16:00</td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">17:00</td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td class="lift">Lift</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="time-slot">18:00</td>
+                <td></td>
+                <td></td>
+                <td class="food">Lave mad</td>
+                <td></td>
+                <td></td>
+                <td class="food">Lave mad</td>
+                <td></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+
+
+
+
+@code {
+    private List<Todo> todos = new List<Todo>
+{
+        new Todo { Id = 1, Title = "Complete Blazor tutorial"},
+        new Todo { Id = 2, Title = "Create a to-do list app" }
+    };
+    private bool isDarkMode = false;
+    private string newTask = "";
+
+    private DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTask))
+        {
+            todos.Add(new Todo { Id = todos.Count + 1, Title = newTask, });
+            newTask = "";
+        }
+    }
+
+    private string GetDayClass(DayOfWeek dayOfWeek)
+    {
+        return currentDayOfWeek == dayOfWeek ? "current-day" : "";
+    }
+
+    private void DeleteTask(Todo todo)
+    {
+        todos.Remove(todo);
+    }
+
+
+}

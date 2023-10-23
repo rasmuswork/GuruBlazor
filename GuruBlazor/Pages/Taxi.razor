@@ -1,0 +1,161 @@
+﻿@page "/Taxi"
+
+@using TaxiCALC.Data
+
+
+<h3>Taxi Estimator</h3>
+
+<div>
+    <label>Select Taxi Type:</label>
+    <select @bind="customerChoices.SelectedVognType">
+        <option value="@vognType.Almindelig">Almindelig</option>
+        <option value="@vognType.AlmindeligAften">Almindelig Aften</option>
+        <option value="@vognType.Stor">Stor</option>
+        <option value="@vognType.StorSpecial">Stor Special</option>
+    </select>
+</div>
+
+<div>
+    <label>Additional Fees:</label>
+    <ul>
+        <li><input type="checkbox" @bind="customerChoices.TransportAfCykel" /> Transport af cykel</li>
+        <li><input type="checkbox" @bind="customerChoices.Opbaering" /> Opbæring</li>
+        <li><input type="checkbox" @bind="customerChoices.Lufthavn" /> Lufthavn</li>
+        <li><input type="checkbox" @bind="customerChoices.AfhentningILufthavn" /> Afhenting i lufthavn</li>
+        <li><input type="checkbox" @bind="customerChoices.FemPersonerEllerOver" /> 5-6 personer</li>
+        <li><input type="checkbox" @bind="customerChoices.Liftvogn" /> Liftvogn</li>
+        <li><input type="checkbox" @bind="customerChoices.Oeresundsbro" /> Øresundsbro</li>
+        <li><input type="checkbox" @bind="customerChoices.Storebaeltsbroen" /> Storebæltsbroen</li>
+    </ul>
+</div>
+
+<div>
+    <label>Estimated Time (minutes):</label>
+    <input type="number" @bind="customerChoices.EstimatedTime" />
+</div>
+
+<div>
+    <label>Estimated Total Km:</label>
+    <input type="number" @bind="customerChoices.DistanceInKm" />
+</div>
+
+<button @onclick="CalculateTotal">Calculate Total</button>
+
+
+
+<div>
+    <iframe width="800" height="600" src="https://www.openstreetmap.org/export/embed.html?bbox=12.552180290222168%2C56.00450020600001%2C12.6513147354126%2C56.035681326484394&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="https://www.openstreetmap.org/#map=15/56.0201/12.6017">View Larger Map</a></small>
+</div>
+
+@if (customerChoices.TotalPris.HasValue)
+{
+    <div>
+        <p>Total Price: @customerChoices.TotalPris</p>
+    </div>
+}
+
+
+
+
+
+@code {
+    //Could be made with switch case. Writing it here is not noticeably slower than writing it in a .cs file
+    private vognType selectedVognType = vognType.Almindelig; //the default vogntype
+
+    public CustomerChoices customerChoices = new CustomerChoices(); //creates a new customer choices ready for input
+
+    void CalculateTotal() //a method that is used to calculate the total price on call
+    {
+        // Get the TaxiData for the selected taxi type
+        TaxiData taxiData = GetTaxiData(customerChoices.SelectedVognType);
+
+
+        decimal basePrice = taxiData.startPris;
+        decimal kmPrice = (decimal)taxiData.Kilometerpris;
+        double minutePrice = taxiData.minutPris;
+
+        decimal additionalFees = 0.00m;
+
+        if (customerChoices.TransportAfCykel)
+            additionalFees += customerChoices.CykelTillaeg;
+
+        if (customerChoices.Opbaering)
+            additionalFees += customerChoices.OpbaeringTillaeg;
+
+        if (customerChoices.Lufthavn)
+            additionalFees += customerChoices.LufthavnTillaeg;
+
+        if (customerChoices.AfhentningILufthavn)
+            additionalFees += customerChoices.LufthavnTillaeg;
+
+        if (customerChoices.FemPersonerEllerOver)
+            additionalFees += customerChoices.FemPersonerEllerOverTillaeg;
+
+        if (customerChoices.Liftvogn)
+            additionalFees += customerChoices.LiftvognTillaeg;
+
+        if (customerChoices.Oeresundsbro)
+            additionalFees += customerChoices.OeresundsbroTillaeg;
+
+        if (customerChoices.Storebaeltsbroen)
+            additionalFees += customerChoices.StorebaeltsbroenTillaeg;
+
+
+
+        decimal totalPrice = basePrice + (decimal)(kmPrice * customerChoices.DistanceInKm) + (decimal)(minutePrice * customerChoices.EstimatedTime) + additionalFees;
+
+        customerChoices.TotalPris = totalPrice;
+
+      
+        //User should not be able to input anything other than numbers because of the input type defined further up.
+    }
+
+    //keeps track of chosen data and provides the correct values.
+
+    TaxiData GetTaxiData(vognType selectedVognType)
+    {
+
+
+        if (selectedVognType == vognType.Almindelig)
+        {
+            return new TaxiData
+            {
+                startPris = 37.00m,
+                Kilometerpris = 12.75,
+                minutPris = 5.75
+            };
+        }
+        else if (selectedVognType == vognType.AlmindeligAften)
+        {
+            return new TaxiData
+            {
+                startPris = 47.00m,
+                Kilometerpris = 16.00,
+                minutPris = 7.00
+            };
+        }
+        else if (selectedVognType == vognType.Stor)
+        {
+            return new TaxiData
+            {
+                startPris = 77.00m,
+                Kilometerpris = 17.00,
+                minutPris = 5.75
+            };
+        }
+        else if (selectedVognType == vognType.StorSpecial)
+        {
+            return new TaxiData
+            {
+                startPris = 87.00m,
+                Kilometerpris = 19.00,
+                minutPris = 7.00
+            };
+        }
+
+        return null;
+    }
+
+}
+
+
