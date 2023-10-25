@@ -11,8 +11,6 @@ namespace TaxiCALC.Data
 
     public class TaxiData
     {
-        
-
         public vognType ?vognNavn;
 
         public decimal startPris = 0;
@@ -24,7 +22,6 @@ namespace TaxiCALC.Data
         internal decimal TotalPris;
     }
 
-    
     
         public class CustomerChoices
         {
@@ -54,10 +51,6 @@ namespace TaxiCALC.Data
             public decimal LiftvognTillaeg { get; set; } = 350.00m;
             public decimal OeresundsbroTillaeg { get; set; } = 350.00m;
             public decimal StorebaeltsbroenTillaeg { get; set; } = 540.00m;
-
-
-
-
         }
     
         
