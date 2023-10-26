@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    
 }
 
 h1:focus {
@@ -98,5 +99,16 @@ td, th {
 
 .food {
     background-color: royalblue;
+}
+
+.sidegrade {
+    background-color: #00092b;
+}
+
+.boxes {
+    background-color: rgb(21 25 37);
+    box-shadow: 0px 5px 3px 0px #0f003fad;
+    background: linear-gradient(90deg, #ffffff 98%, #d8d8d8 100%);
+    color: white;
 }
 

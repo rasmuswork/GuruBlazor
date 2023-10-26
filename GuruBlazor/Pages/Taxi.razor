@@ -107,10 +107,10 @@
         customerChoices.TotalPris = totalPrice;
 
       
-        //User should not be able to input anything other than numbers because of the input type defined further up.
+        //User should not be able to input anything other than numbers because of the input type defined further up. Negative numbers will default to zero because of uint type.
     }
 
-    //keeps track of chosen data and provides the correct values.
+    //Keeps track of chosen data and provides the correct values.
 
     TaxiData GetTaxiData(vognType selectedVognType)
     {
@@ -152,7 +152,7 @@
                 minutPris = 7.00
             };
         }
-
+        //If none of these are chosen, return nothing at all.
         return null;
     }
 
