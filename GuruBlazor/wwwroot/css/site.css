@@ -107,8 +107,11 @@ td, th {
 
 .boxes {
     background-color: rgb(21 25 37);
-    box-shadow: 0px 5px 3px 0px #0f003fad;
+    box-shadow: 6px 6px 2px 0px #002779;
     background: linear-gradient(90deg, #ffffff 98%, #d8d8d8 100%);
-    color: white;
+    color: black;
 }
 
+.flexo {
+    display:flex;
+}

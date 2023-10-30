@@ -3,50 +3,53 @@
 @using TaxiCALC.Data
 
 
-<h3>Taxi Estimator</h3>
+<div class="container">
+    <div>
+        <h3>Taxi Estimator</h3>
+        <div class="right-column">
+            <label>Select Taxi Type:</label>
+            <select @bind="customerChoices.SelectedVognType">
+                <option value="@vognType.Almindelig">Almindelig</option>
+                <option value="@vognType.AlmindeligAften">Almindelig Aften</option>
+                <option value="@vognType.Stor">Stor</option>
+                <option value="@vognType.StorSpecial">Stor Special</option>
+            </select>
+        </div>
 
-<div>
-    <label>Select Taxi Type:</label>
-    <select @bind="customerChoices.SelectedVognType">
-        <option value="@vognType.Almindelig">Almindelig</option>
-        <option value="@vognType.AlmindeligAften">Almindelig Aften</option>
-        <option value="@vognType.Stor">Stor</option>
-        <option value="@vognType.StorSpecial">Stor Special</option>
-    </select>
+        <div>
+            <label>Additional Fees:</label>
+            <ul>
+                <li><input type="checkbox" @bind="customerChoices.TransportAfCykel" /> Transport af cykel</li>
+                <li><input type="checkbox" @bind="customerChoices.Opbaering" /> Opbæring</li>
+                <li><input type="checkbox" @bind="customerChoices.Lufthavn" /> Lufthavn</li>
+                <li><input type="checkbox" @bind="customerChoices.AfhentningILufthavn" /> Afhenting i lufthavn</li>
+                <li><input type="checkbox" @bind="customerChoices.FemPersonerEllerOver" /> 5-6 personer</li>
+                <li><input type="checkbox" @bind="customerChoices.Liftvogn" /> Liftvogn</li>
+                <li><input type="checkbox" @bind="customerChoices.Oeresundsbro" /> Øresundsbro</li>
+                <li><input type="checkbox" @bind="customerChoices.Storebaeltsbroen" /> Storebæltsbroen</li>
+            </ul>
+        </div>
+
+        <div>   
+            <label>Estimated Time (minutes):</label>
+            <input type="number" @bind="customerChoices.EstimatedTime" />
+        </div>
+
+        <div>
+            <label>Estimated Total Km:</label>
+            <input type="number" @bind="customerChoices.DistanceInKm" />
+        </div>
+
+
+
+        <button @onclick="CalculateTotal">Calculate Total</button>
+    </div>
+
+
+    <div class="right-column">
+        <iframe width="800" height="600" src="https://www.openstreetmap.org/export/embed.html?bbox=12.552180290222168%2C56.00450020600001%2C12.6513147354126%2C56.035681326484394&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="https://www.openstreetmap.org/#map=15/56.0201/12.6017">View Larger Map</a></small>
+    </div>
 </div>
-
-<div>
-    <label>Additional Fees:</label>
-    <ul>
-        <li><input type="checkbox" @bind="customerChoices.TransportAfCykel" /> Transport af cykel</li>
-        <li><input type="checkbox" @bind="customerChoices.Opbaering" /> Opbæring</li>
-        <li><input type="checkbox" @bind="customerChoices.Lufthavn" /> Lufthavn</li>
-        <li><input type="checkbox" @bind="customerChoices.AfhentningILufthavn" /> Afhenting i lufthavn</li>
-        <li><input type="checkbox" @bind="customerChoices.FemPersonerEllerOver" /> 5-6 personer</li>
-        <li><input type="checkbox" @bind="customerChoices.Liftvogn" /> Liftvogn</li>
-        <li><input type="checkbox" @bind="customerChoices.Oeresundsbro" /> Øresundsbro</li>
-        <li><input type="checkbox" @bind="customerChoices.Storebaeltsbroen" /> Storebæltsbroen</li>
-    </ul>
-</div>
-
-<div>
-    <label>Estimated Time (minutes):</label>
-    <input type="number" @bind="customerChoices.EstimatedTime" />
-</div>
-
-<div>
-    <label>Estimated Total Km:</label>
-    <input type="number" @bind="customerChoices.DistanceInKm" />
-</div>
-
-<button @onclick="CalculateTotal">Calculate Total</button>
-
-
-
-<div>
-    <iframe width="800" height="600" src="https://www.openstreetmap.org/export/embed.html?bbox=12.552180290222168%2C56.00450020600001%2C12.6513147354126%2C56.035681326484394&amp;layer=mapnik" style="border: 1px solid black"></iframe><br /><small><a href="https://www.openstreetmap.org/#map=15/56.0201/12.6017">View Larger Map</a></small>
-</div>
-
 @if (customerChoices.TotalPris.HasValue)
 {
     <div>
@@ -54,7 +57,24 @@
     </div>
 }
 
+<style>
+    .container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
 
+    .left-column {
+        flex: 1;
+        max-width: 45%;
+    }
+
+    .right-column {
+        flex: 1;
+        max-width: 45%;
+    }
+</style>
 
 
 
